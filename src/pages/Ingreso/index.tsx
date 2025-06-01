@@ -4,15 +4,22 @@ import { ingresoInputs } from "../../utils/cardData/copys";
 import { Link } from "react-router-dom";
 import home from '../../assets/images/home.png';
 import user from '../../assets/images/user1.png';
+import { useEffect } from "react";
+import {addItem, getItems } from "../../services/movieServices";
 
 export default function Ingreso() {
 
 
-    const accesosInputs = [
-        { name: "username", type: "text", placeholder: "Nombre de usuario", required: true },
-        { name: "accessType", type: "text", placeholder: "Tipo de acceso" },
-    ];
-    
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const adicion = await addItem('','employees');
+            console.log('step 1 data final',adicion);
+            const consulta = await getItems('employees');
+            console.log('step 2 data final',consulta);
+        }
+        fetchData();
+    }, []);
     
     return (
         <div>
