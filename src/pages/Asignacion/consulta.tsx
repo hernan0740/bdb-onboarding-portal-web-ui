@@ -1,35 +1,88 @@
+import React, { useState, useEffect } from "react";
+import TablaDinamica from "../../components/tableComponent";
+import { useUser } from "../../hooks/UserContext";
+import ConsultaForm from "../../components/consultaForm";
+import {getDeviceRequest} from "../../services/deviceServices";
+
+type SolicitudEquipo = {
+  id: number;
+  nombre: string;
+  documento: string;
+  equipo: string;
+  fecha: string;
+};
+
 export default function Consulta() {
-    return (
-        <div className="mx-auto w-25">
-            <form>
-                <fieldset>
-                    <legend>Consulta equipo</legend>
-                    <div className="mb-3">
-                        <label className="form-label">Seleccionar equipo</label>
-                        <select className="form-select" aria-label="Default select example">
-                            <option selected>Equipo dispnibles</option>
-                            <option value="1">MAC m1 256GB-16GB</option>
-                            <option value="2">MAC m2 256GB-16GB</option>
-                            <option value="3">MAC m1-R 256GB-16GB</option>
-                        </select>
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Jira services</label>
-                        <div className="form-check form-switch">
-                            <input className="form-check-input" type="checkbox" role="switch" id="switchCheckChecked"
-                                   checked={false}/>
-                            <label className="form-check-label">Checked switch checkbox
-                                input</label>
-                        </div>
-                    </div>
-                    <div className="mb-3">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled/>
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </fieldset>
-            </form>
-        </div>
-    )
+  const [solicitudes, setSolicitudes] = useState<SolicitudEquipo[]>([]);
+  const [resultadoConsulta, setResultadoConsulta] = useState<SolicitudEquipo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { role } = useUser();
+
+  useEffect(() => {
+    if (role === "lider") {
+      cargarSolicitudesSimuladas();
+    }
+  }, [role]);
+
+  const cargarSolicitudesSimuladas = () => {
+    setLoading(true);
+    setTimeout(() => {
+      const datosSimulados: SolicitudEquipo[] = [
+        {
+          id: 1,
+          nombre: "Juan Pérez",
+          documento: "123456789",
+          equipo: "MAC m1 256GB-16GB",
+          fecha: "2025-06-01",
+        },
+        {
+          id: 2,
+          nombre: "María Gómez",
+          documento: "987654321",
+          equipo: "MAC m2 512GB-32GB",
+          fecha: "2025-06-02",
+        },
+      ];
+      setSolicitudes(datosSimulados);
+      setLoading(false);
+    }, 1000);
+  };
+
+  const getDeviceHandler = async (nombre: string, documento: string) => {
+    try {
+      setLoading(true);
+      const resultado = await getDeviceRequest( documento,nombre);
+      setResultadoConsulta(resultado);
+    } catch (error) {
+      console.error("Error en la consulta:", error);
+      alert("Hubo un error al realizar la consulta.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+      <div className="mx-auto w-75">
+        {loading && role === "lider" ? (
+            <p>Cargando solicitudes...</p>
+        ) : solicitudes.length > 0 ? (
+            <>
+              <h2 className="mb-4 text-center">Solicitudes de Equipos</h2>
+              <TablaDinamica data={solicitudes} />
+            </>
+        ) : null}
+
+        <hr />
+
+        <h3 className="mb-3">Consulta individual de equipo</h3>
+        <ConsultaForm onSubmit={({ nombre, cedula }) => getDeviceHandler( nombre, cedula)} />
+
+        {resultadoConsulta.length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-3">Resultado de la consulta</h4>
+              <TablaDinamica data={resultadoConsulta} />
+            </div>
+        )}
+      </div>
+  );
 }
