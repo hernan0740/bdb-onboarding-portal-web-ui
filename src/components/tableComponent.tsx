@@ -1,4 +1,3 @@
-// components/TablaDinamica.tsx
 import React from "react";
 import { useDataTable } from "../hooks/useDataTable";
 
@@ -14,7 +13,7 @@ const TablaDinamica: React.FC<TablaDinamicaProps> = ({ data }) => {
   }
 
   return (
-    <table className="table table-light table-striped mx-auto w-75">
+    <table className="table table-light table-striped mx-auto w-50">
       <thead>
         <tr>
           <th scope="col">#</th>

@@ -8,7 +8,15 @@ export const DataCardsHome = [
     url: "/asignacion",
     image: pc,
     btnText: "Asignar computador",
-    rol: ["lider", "dev"],
+    rol: ["lider"],
+  },
+  {
+    title: "Consulta de Equipo",
+    description: "Permite consultar la  solicitud de un equipo para nuevo ingreso",
+    url: "/asignacion",
+    image: pc,
+    btnText: "Consultar",
+    rol: ["dev"],
   },
   {
     title: "Creacion de Usuario",
@@ -24,7 +32,15 @@ export const DataCardsHome = [
     url: "/Permisos",
     image: key,
     btnText: "Solicitar acceso",
-    rol: ["lider", "dev"],
+    rol: ["lider"],
+  },
+  {
+    title: "Consultar Accesos",
+    description: "Permite consultar estado de solicitud para nuevo miembro del equipo",
+    url: "/Permisos",
+    image: key,
+    btnText: "Consultar",
+    rol: ["dev"],
   },
 ];
 
@@ -102,74 +118,6 @@ export const ingresoInputs = [
     required: true,
     className: "form-control",
   },
-];
-
-export const PermisosInputs = [
-  {
-    name: "documento",
-    type: "number",
-    placeholder: "Ingresa cédula",
-    required: true,
-    className: "form-control",
-  },
-  {
-    name: "rol",
-    type: "text",
-    placeholder: "Ingresa Nombre Completo",
-    required: true,
-    className: "form-control",
-  },
-  {
-    name: "aws",
-    type: "email",
-    placeholder: "Ingresa Correo",
-    required: true,
-    className: "form-control",
-  },
-  {
-    name: "github",
-    type: "text",
-    placeholder: "Ingresa area",
-    required: true,
-    className: "form-check-label",
-  },
-  {
-    name: "Jira",
-    type: "text",
-    placeholder: "Ingresa rol",
-    required: true,
-    className: "form-control",
-  },
-  {
-    name: "Jira tipo de acceso",
-    type: "text",
-    placeholder: "Ingresa rol",
-    required: true,
-    className: "form-control",
-  },
-];
-
-export const permisosInputs = [
-  {
-    name: "documento",
-    type: "number",
-    placeholder: "Ingresa cédula",
-    required: true,
-  },
-  {
-    name: "nombre",
-    type: "text",
-    placeholder: "Ingresa Nombre Completo",
-    required: true,
-  },
-  {
-    name: "correo",
-    type: "email",
-    placeholder: "Ingresa Correo",
-    required: true,
-  },
-  { name: "area", type: "text", placeholder: "Ingresa area", required: true },
-  { name: "rol", type: "text", placeholder: "Ingresa rol", required: true },
 ];
 
 export const inventarioEquipos = [

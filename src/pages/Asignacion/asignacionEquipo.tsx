@@ -32,7 +32,8 @@ export default function AsignacionEquipo() {
     const asignacion = {
       documento: formData.documento,
       nombre: formData.nombre,
-      equipo: inventarioEquipos[formData.equipoSeleccionado],
+      equipo: inventarioEquipos[formData.equipoSeleccionado].equipo,
+      serie: inventarioEquipos[formData.equipoSeleccionado].numeroSerie,
     };
 
     console.log("Asignación guardada:", asignacion);

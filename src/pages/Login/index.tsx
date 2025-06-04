@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useUser } from "../../hooks/UserContext";
 import {authServices} from "../../services/authServices";
-// mport axios from "axios";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -11,8 +10,6 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-        console.log('datos recibidos', username);
-        console.log('datos recibidos', password);
       const response = await authServices({
           'username': username,
           'password': password,

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import TablaDinamica from "../../components/tableComponent";
 import { useUser } from "../../hooks/UserContext";
 import ConsultaForm from "../../components/consultaForm";
-import {getDeviceRequest} from "../../services/deviceServices";
+import {getDeviceData, getDeviceRequest} from "../../services/deviceServices";
 
 type SolicitudEquipo = {
   id: number;
@@ -24,34 +24,18 @@ export default function Consulta() {
     }
   }, [role]);
 
-  const cargarSolicitudesSimuladas = () => {
+  const cargarSolicitudesSimuladas = async () => {
     setLoading(true);
-    setTimeout(() => {
-      const datosSimulados: SolicitudEquipo[] = [
-        {
-          id: 1,
-          nombre: "Juan Pérez",
-          documento: "123456789",
-          equipo: "MAC m1 256GB-16GB",
-          fecha: "2025-06-01",
-        },
-        {
-          id: 2,
-          nombre: "María Gómez",
-          documento: "987654321",
-          equipo: "MAC m2 512GB-32GB",
-          fecha: "2025-06-02",
-        },
-      ];
-      setSolicitudes(datosSimulados);
+      const dataTotal = await getDeviceData();
+    const lastData = dataTotal.slice(-2);
+      setSolicitudes(lastData);
       setLoading(false);
-    }, 1000);
   };
 
-  const getDeviceHandler = async (nombre: string, documento: string) => {
+  const getDeviceHandler = async ( documento: string) => {
     try {
       setLoading(true);
-      const resultado = await getDeviceRequest( documento,nombre);
+      const resultado = await getDeviceRequest( documento);
       setResultadoConsulta(resultado);
     } catch (error) {
       console.error("Error en la consulta:", error);
@@ -75,7 +59,7 @@ export default function Consulta() {
         <hr />
 
         <h3 className="mb-3">Consulta individual de equipo</h3>
-        <ConsultaForm onSubmit={({ nombre, cedula }) => getDeviceHandler( nombre, cedula)} />
+        <ConsultaForm onSubmit={({  cedula }) => getDeviceHandler( cedula)} />
 
         {resultadoConsulta.length > 0 && (
             <div className="mt-4">

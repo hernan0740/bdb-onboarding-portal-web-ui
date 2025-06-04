@@ -8,7 +8,7 @@ export const useCardComponent = (
   const cards = role
     ? cardData.filter((card) => card.rol?.includes(role))
     : cardData;
-  console.log("useCardComponent", cards);
+
   return (
     <div
       className="mx-auto w-75"

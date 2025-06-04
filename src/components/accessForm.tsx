@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CardComponent from "./cardComponent";
+import {createAccessRequest} from "../services/accessServices";
 
 export interface AccessComponentProps {
   userRole: string;
@@ -7,7 +8,6 @@ export interface AccessComponentProps {
 
 function AccessForm({ userRole }: AccessComponentProps) {
   const [formData, setFormData] = useState({
-    name: "",
     document: "",
     awsAccess: "",
     githubAccess: "",
@@ -33,10 +33,10 @@ function AccessForm({ userRole }: AccessComponentProps) {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.document) {
+    if (!formData.document) {
       alert("Debe completar todos los campos obligatorios.");
       return;
     }
@@ -52,23 +52,15 @@ function AccessForm({ userRole }: AccessComponentProps) {
     }
 
     console.log("Permisos solicitados:", { ...formData, userRole });
+    console.log(formData);
+    const res = await createAccessRequest(formData);
+    console.log(res);
     alert("Formulario enviado con éxito");
   };
 
   return (
     <form onSubmit={handleSubmit} className="p-4 border rounded">
       <h4 className="mb-4">Solicitud de Accesos Digitales ({userRole})</h4>
-
-      <div className="mb-3">
-        <label className="form-label">Nombre completo</label>
-        <input
-          name="name"
-          type="text"
-          className="form-control"
-          onChange={handleChange}
-          value={formData.name}
-        />
-      </div>
 
       <div className="mb-3">
         <label className="form-label">Número de documento</label>

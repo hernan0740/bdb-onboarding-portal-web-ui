@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useUser } from "../../hooks/UserContext";
 import ConsultaForm from "../../components/consultaForm";
 import TablaDinamica from "../../components/tableComponent";
+import {getDeviceRequest} from "../../services/deviceServices";
+import {getRequestByUser} from "../../services/accessServices";
 
 type AccesoData = {
     id: number;
@@ -16,22 +18,11 @@ export default function ConsultaAccesos() {
     const [loading, setLoading] = useState(false);
     const [resultadoConsulta, setResultadoConsulta] = useState<AccesoData[]>([]);
 
-    const consultarAccesos = async (nombre: string, cedula: string) => {
+    const consultarAccesos = async ( cedula: string) => {
         try {
             setLoading(true);
-
-            await new Promise((res) => setTimeout(res, 1000));
-
-            const resultado: AccesoData[] = [
-                {
-                    id: 101,
-                    nombre,
-                    cedula,
-                    sistema: "SAP",
-                    fechaAcceso: "2025-06-03",
-                },
-            ];
-
+            let  resultado = await getRequestByUser(cedula);
+            console.log('respuesta ',resultado);
             setResultadoConsulta(resultado);
         } catch (error) {
             console.error("Error al consultar accesos:", error);
@@ -42,11 +33,11 @@ export default function ConsultaAccesos() {
     };
 
     return (
-        <div className="mx-auto w-75">
+        <div className="mx-auto w-50">
             <h3 className="mb-3">Consulta individual de ACCESOS</h3>
 
             <ConsultaForm
-                onSubmit={({ nombre, cedula }) => consultarAccesos(nombre, cedula)}
+                onSubmit={({  cedula }) => consultarAccesos( cedula)}
             />
 
             {loading && <p>Consultando accesos...</p>}

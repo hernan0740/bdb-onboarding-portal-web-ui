@@ -30,8 +30,24 @@ export const deviceRequest= async (data: any) => {
     }
 }
 
-export const getDeviceRequest = async ( documento:string,nombre: string) => {
+export const getDeviceRequest = async ( documento:string) => {
     const url = `${endPoint}${PATHS_ENDPOINTS.equipment}/${documento}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error("Falló la consulta de dispositivo");
+        }
+        const result = await response.json();
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.error("Error device services ", error);
+        throw error;
+    }
+}
+
+export const getDeviceData = async ( ) => {
+    const url = `${endPoint}${PATHS_ENDPOINTS.equipment}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
